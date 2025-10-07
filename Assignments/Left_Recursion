@@ -1,0 +1,24 @@
+#include<stdio.h>
+#include<string.h>
+int main() {
+    int num;
+    char prod[50],A,alpha[25],beta[25];
+    printf("enter number of productions:");
+    scanf("%d",&num);
+    
+    for (int n=0;n<num;n++){
+        printf("Enter productions: ");
+        scanf("%s",prod);
+        A=prod[0];
+        if(prod[3]==A){
+            int i=4,j=0;
+            while (prod[i]&&prod[i]!='|') alpha[j++]=prod[i++];
+            alpha[j]='\0';
+            strcpy(beta, prod+i+1);
+            printf("\n%c->%s%c'\n%c'->%s%c'|e\n",A,beta,A,A,alpha,A);
+        }else{
+            printf("\n%s:No left Recursion!\n",prod);
+        }
+    }
+    return 0;
+}

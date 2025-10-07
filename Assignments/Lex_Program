@@ -1,0 +1,46 @@
+%{
+int comment =0;
+%}
+
+identifier [a-za-Z][a-zA-Z0-9]*
+
+%%
+
+#.*{printf("%s -> this is a preprocessor directive\n",yytext);}
+
+"/*" {comment=1; printf("%s -> is a comment \n",yytext);}
+int |
+float |
+char |
+double |
+void |
+main |
+if |
+else|
+for |
+while |
+break |
+return |
+goto	{if(!comment) printf("%s-> this is a keyword\n",yytext);}
+{identifier}\( {if (!comment) printf("%s -> function name",yytext);}
+\{ {printf("block starts\n");}
+\} {printf("block ends\n");}
+[0-9]+ {printf("%s -> number\n",yytext);}
+\".*\" {printf("%s -> string\n",yytext);}
+= {printf("= -> assignment operator");}
+==|
+\<|
+\>|
+\>=|
+\<= {printf("%S -> relational operator \n",yytext);}
+
+%%
+int main(void)
+{
+yylex();
+return 0;
+}
+int yywrap(void)
+{
+return 1;
+}

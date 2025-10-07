@@ -1,0 +1,131 @@
+//  LL
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+char *ip;
+char stack[100];
+int top = -1;
+
+void push(char c) {
+    stack[++top] = c;
+}
+
+void pop() {
+    if (top >= 0) top--;
+}
+
+void show() {
+    printf("STACK: ");
+    for (int i = 0; i <= top; i++) {
+        printf("%c", stack[i]);
+    }
+    printf("  INPUT: %s\n", ip);
+}
+
+void match(char c) {
+    if (*ip == c) {
+        pop();
+        ip++;
+        show();
+    } else {
+        printf("Error\n");
+        exit(0);
+    }
+}
+
+void E(), Q(), T(), R(), F();
+
+void E() {
+    pop();
+    push('Q');
+    push('T');
+    show();
+    T();
+    Q();
+}
+
+void Q() {
+    if (*ip == '+') {
+        pop();
+        push('Q');
+        push('T');
+        push('+');
+        show();
+        match('+');
+        T();
+        Q();
+    } else {
+        pop();
+        show();
+    }
+}
+
+void T() {
+    pop();
+    push('R');
+    push('F');
+    show();
+    F();
+    R();
+}
+
+void R() {
+    if (*ip == '*') {
+        pop();
+        push('R');
+        push('F');
+        push('*');
+        show();
+        match('*');
+        F();
+        R();
+    } else {
+        pop();
+        show();
+    }
+}
+
+void F() {
+    if (*ip == 'i') {
+        pop();
+        push('i');
+        show();
+        match('i');
+    } else if (*ip == '(') {
+        pop();
+        push(')');
+        push('E');
+        push('(');
+        show();
+        match('(');
+        E();
+        match(')');
+    } else {
+        printf("Error\n");
+        exit(0);
+    }
+}
+
+int main() {
+    char input[100];
+    printf("Enter input: ");
+    scanf("%s", input);
+
+    strcat(input, "$");
+    ip = input;
+
+    push('$');
+    push('E');
+    show();
+
+    E();
+
+    if (*ip == '$')
+        printf("SUCCESS\n");
+    else
+        printf("FAIL\n");
+
+    return 0;
+}
+

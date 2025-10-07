@@ -1,0 +1,21 @@
+#include <stdio.h>
+#include <string.h>
+
+int main(){
+    char gram[50],left[25],right[25],fact[25],rem[25];
+    int i=0,j=0,k=0;
+    
+    printf("Enter the production: A->");
+    scanf("%s",gram);
+    
+    while (gram[i]!='|') left[j++]= gram[i++];
+    left[j]='\0';
+    strcpy(right,gram+i+1);
+    
+    for (i=0;left[i]&&right[i]&&left[i]==right[i];i++)
+        fact[k++]=left[i];
+    fact[k]='\0';
+    
+    printf("\nA->%sX\nX->%s|%s\n",fact,left+i,right+i);
+    return 0;
+}
